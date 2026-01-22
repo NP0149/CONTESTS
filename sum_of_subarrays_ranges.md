@@ -60,3 +60,43 @@ class Solution {
 Time:O(n^2)
 
 Space:O(1)
+
+# Best or Optimal Approach
+
+```
+class Solution {
+    public int subarrayRanges(int[] arr) {
+                int n = arr.length;
+        long maxSum = 0, minSum = 0;
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i <= n; i++) {
+            while (!stack.isEmpty() && (i == n || arr[stack.peek()] <arr[i])) {
+                int mid = stack.pop();
+                int left = stack.isEmpty() ? mid + 1 : mid - stack.peek();
+                int right = i - mid;
+                maxSum += (long) arr[mid] * left * right;
+            }
+            stack.push(i);
+        }
+        stack.clear();
+        for (int i = 0; i <= n; i++) {
+            while (!stack.isEmpty() && (i == n || arr[stack.peek()] > arr[i])) {
+                int mid = stack.pop();
+                int left = stack.isEmpty() ? mid + 1 : mid - stack.peek();
+                int right = i - mid;
+                minSum += (long) arr[mid] * left * right;
+            }
+            stack.push(i);
+        }
+
+        return (int)(maxSum - minSum);
+
+    }
+}
+```
+
+# Complexity Analysis
+
+Time:O(n)
+
+Space:O(n)
